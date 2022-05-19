@@ -17,6 +17,7 @@ public class controller : MonoBehaviour
     private void Start()
     {
         befRight = rightController.transform.localPosition.x;
+        befLeft = leftController.transform.localPosition.x;
     }
 
     // Update is called once per frame
@@ -37,16 +38,22 @@ public class controller : MonoBehaviour
         rightController.transform.localPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
         rightController.transform.localRotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch);
         */
-        Debug.Log("rightController.transform : " + rightController.transform.localPosition.x + ", " + rightController.transform.localPosition.y + "," + rightController.transform.localPosition.z);
-        Debug.Log("gameObject.rotation : " + gameObject.transform.localRotation.x + ", " + gameObject.transform.localRotation.y + ", " + gameObject.transform.localRotation.z);
-        Debug.Log("gameObject.transform : " + gameObject.transform.position.x + ", " + gameObject.transform.position.y + ", " + gameObject.transform.position.z);
 
-        float move = (rightController.transform.localPosition.x - befRight);
-        if (move > 0)
+        float moveRight = rightController.transform.localPosition.x - befRight;
+        float moveLeft = befLeft - leftController.transform.localPosition.x;
+        Vector3 forward = gameObject.transform.forward;
+
+        if (moveRight > 0)
         {
-            Vector3 dir = gameObject.transform.forward;
-            gameObject.transform.position -= dir * move;
+            gameObject.transform.position -= forward * moveRight;
+            gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, -30, 0, 0) * moveRight);
+        }
+        if (moveLeft > 0)
+        {
+            gameObject.transform.position -= forward * moveLeft;
+            gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, 30, 0, 0) * moveLeft);
         }
         befRight = rightController.transform.localPosition.x;
+        befLeft = leftController.transform.localPosition.x;
     }
 }
