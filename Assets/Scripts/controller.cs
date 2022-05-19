@@ -12,7 +12,12 @@ public class controller : MonoBehaviour
 
     public GameObject leftController, rightController;
 
-    public Text info;
+    float befRight, befLeft;
+
+    private void Start()
+    {
+        befRight = rightController.transform.localPosition.x;
+    }
 
     // Update is called once per frame
     void Update()
@@ -24,15 +29,24 @@ public class controller : MonoBehaviour
         movement = movement.magnitude == 0 ? Vector3.zero : movement / movement.magnitude;
         movement *= Time.deltaTime * (OVRInput.Get(OVRInput.Button.PrimaryThumbstick) ? RUN_SPEED : WALK_SPEED) * input.magnitude;
         this.transform.Translate(movement);
-        */
+        
 
         //Controller Tracking
         leftController.transform.localPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
         leftController.transform.localRotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch);
         rightController.transform.localPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
         rightController.transform.localRotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch);
+        */
+        Debug.Log("rightController.transform : " + rightController.transform.localPosition.x + ", " + rightController.transform.localPosition.y + "," + rightController.transform.localPosition.z);
+        Debug.Log("gameObject.rotation : " + gameObject.transform.localRotation.x + ", " + gameObject.transform.localRotation.y + ", " + gameObject.transform.localRotation.z);
+        Debug.Log("gameObject.transform : " + gameObject.transform.position.x + ", " + gameObject.transform.position.y + ", " + gameObject.transform.position.z);
 
-        info.text = rightController.transform.localPosition.x + ", " + rightController.transform.localPosition.y + "," + rightController.transform.localPosition.z;
-        Debug.Log(rightController.transform.localPosition.x + ", " + rightController.transform.localPosition.y + "," + rightController.transform.localPosition.z);
+        float move = (rightController.transform.localPosition.x - befRight);
+        if (move > 0)
+        {
+            Vector3 dir = gameObject.transform.forward;
+            gameObject.transform.position -= dir * move;
+        }
+        befRight = rightController.transform.localPosition.x;
     }
 }
