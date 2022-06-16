@@ -7,13 +7,17 @@ public class controller : MonoBehaviour
 {
     public GameObject camera;
     public GameObject leftController, rightController;
+    public GameObject forwardDirection;
 
-    // public const float WALK_SPEED = 2.5f;
+    public const float WALK_SPEED = 10f;
     // public const float RUN_SPEED = 6f;
     public const float ROTATE_SPEED = 20f;
 
     private float befRight, befLeft;    // 양쪽 컨트롤러의 위치
-    private bool moveForward, moveRotate;   // 팔을 움직이고 있는지
+    private bool isMoveForward;
+    // private bool moveRotate;   // 팔을 움직이고 있는지
+
+    private float force;
 
     private void Start()
     {
@@ -22,46 +26,65 @@ public class controller : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float moveRight = rightController.transform.localPosition.x - befRight;
         float moveLeft = befLeft - leftController.transform.localPosition.x;
-        Vector3 forward = camera.transform.forward;
+        Vector3 forward = forwardDirection.transform.forward;
 
         // 양팔을 움직이면 앞으로 전진
         if (moveRight > 0.01f && moveLeft > 0.01f)
         {
-            StopCoroutine("MoveForwardCoroutine");
-            gameObject.transform.position -= forward * (moveRight + moveLeft);
-            moveForward = true;
+            //StopCoroutine("MoveForwardCoroutine");
+            //Debug.Log("Update "+forward * WALK_SPEED * (moveRight + moveLeft));
+            //moveRotate = false;
+
+            gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
+            isMoveForward = true;
+            force = WALK_SPEED * 0.02f;
         }
+        // 천천히 전진
+        else if (isMoveForward)
+        {
+            // StopCoroutine("MoveForwardCoroutine");
+            // Debug.Log("moveForward");
+            //moveForward = false;
+            //StartCoroutine("MoveForwardCoroutine", WALK_SPEED * 0.02f);
+
+            gameObject.transform.position += forward * force;
+            Debug.Log("MoveForwardCoroutine " + forward * force);
+            force = Mathf.Lerp(force, 0, Time.deltaTime);
+
+            if (force < 0.01f)
+                isMoveForward = false;
+        }
+        /*
         // 오른팔만 움직이면 왼쪽으로 회전
         else if (moveRight > 0.01f)
         {
-            StopCoroutine("MoveForwardCoroutine");
-            StopCoroutine("MoveRotateCoroutine");
+            //StopCoroutine("MoveForwardCoroutine");
+            //StopCoroutine("MoveRotateCoroutine");
             gameObject.transform.position -= forward * moveRight;
             gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, -ROTATE_SPEED, 0, 0) * moveRight);
+            moveForward = false;
             moveRotate = true;
         }
         // 왼팔만 움직이면 오른쪽으로 회전
         else if (moveLeft > 0.01f)
         {
-            StopCoroutine("MoveForwardCoroutine");
-            StopCoroutine("MoveRotateCoroutine");
+            //StopCoroutine("MoveForwardCoroutine");
+            //StopCoroutine("MoveRotateCoroutine");
             gameObject.transform.position -= forward * moveLeft;
             gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, ROTATE_SPEED, 0, 0) * moveLeft);
+            moveForward = false;
             moveRotate = true;
         }
-        // 천천히 전진
-        else if (moveForward)
-        {
-            moveForward = false;
-            StartCoroutine("MoveForwardCoroutine", moveRight + moveLeft);
-        }
+        */
+        /*
         // 천천히 회전
         else if (moveRotate)
         {
+            Debug.Log("moveRotate");
             moveRotate = false;
             StartCoroutine("MoveForwardCoroutine", moveRight > moveLeft ? moveRight : moveLeft);
             StartCoroutine("MoveRotateCoroutine", 
@@ -69,24 +92,29 @@ public class controller : MonoBehaviour
                 Quaternion.Euler(new Vector4(0, -ROTATE_SPEED, 0, 0) * moveRight) 
                 : Quaternion.Euler(new Vector4(0, ROTATE_SPEED, 0, 0) * moveLeft));
         }
+        */
 
         befRight = rightController.transform.localPosition.x;
         befLeft = leftController.transform.localPosition.x;
     }
 
+    /*
     IEnumerator MoveForwardCoroutine(float force)
     {
-        Vector3 forward = camera.transform.forward;
+        //forward = forwardDirection.transform.forward;
         WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
+        force *= 2; // 보정
 
-        while (force > 0.0001f)
+        while (force > 0.001f)
         {
-            gameObject.transform.position -= forward * force;
+            gameObject.transform.position += forward * force;
+            Debug.Log("MoveForwardCoroutine " + forward * force);
             force = Mathf.Lerp(force, 0, Time.deltaTime);
 
             yield return waitForEndOfFrame;
         }
-        StopCoroutine("MoveRotateCoroutine");
+        yield return null;
+        //StopCoroutine("MoveRotateCoroutine");
     }
 
     // MoveForwardCoroutine이 종료되면 종료
@@ -96,10 +124,12 @@ public class controller : MonoBehaviour
 
         while (true)
         {
+            Debug.Log("MoveRotateCoroutine "+force);
             gameObject.transform.rotation *= force;
             force = Quaternion.Lerp(force, Quaternion.Euler(0, 0, 0), Time.deltaTime);
 
             yield return waitForEndOfFrame;
         }
     }
+    */
 }
