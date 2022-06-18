@@ -27,10 +27,10 @@ public class AutoFlip : MonoBehaviour {
     {
         StartCoroutine(FlipToEnd());
     }
-    public bool FlipRightPage()
+    public void FlipRightPage()
     {
-        if (isFlipping) return true;
-        if (ControledBook.currentPage >= ControledBook.TotalPageCount) return false;
+        if (isFlipping) return;
+        if (ControledBook.currentPage >= ControledBook.TotalPageCount) return;
         isFlipping = true;
         float frameTime = PageFlipTime / AnimationFramesCount;
         float xc = (ControledBook.EndBottomRight.x + ControledBook.EndBottomLeft.x) / 2;
@@ -40,7 +40,6 @@ public class AutoFlip : MonoBehaviour {
         float dx = (xl)*2 / AnimationFramesCount;
         StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx));
         flipAudio.Play();
-        return true;
     }
     public void FlipLeftPage()
     {
