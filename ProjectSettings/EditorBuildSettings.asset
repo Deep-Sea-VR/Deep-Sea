@@ -5,15 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Room.unity
+    guid: 9b62f70e0cfef714daacf8f5a8e9bc4f
+  - enabled: 1
+    path: Assets/Davis3D/OceanEnvironmentPack/Scenes/Demonstration.unity
+    guid: af2f90eac4257a54cad615691e9c1882
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/Davis3D/OceanEnvironmentPack/Scenes/Demonstration.unity
-    guid: af2f90eac4257a54cad615691e9c1882
-  - enabled: 1
-    path: Assets/Scenes/Demo 1.unity
-    guid: 9b62f70e0cfef714daacf8f5a8e9bc4f
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 378f8d348ce706844845e9c42981f94e, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a67526e1744417b41afec9d8520f185f, type: 2}
