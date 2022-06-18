@@ -7,6 +7,9 @@ public class BookFlip : MonoBehaviour
     [SerializeField]
     private AutoFlip autoFlip;
 
+    [SerializeField]
+    private Animator lidsAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +26,10 @@ public class BookFlip : MonoBehaviour
     {
         if (OVRInput.GetDown(OVRInput.Button.One))  // A button
         {
-            autoFlip.FlipRightPage();
+            if (!autoFlip.FlipRightPage())  // 마지막 페이지라면
+            {
+                lidsAnimator.SetTrigger("Close");
+            }
         }
         if (OVRInput.GetDown(OVRInput.Button.Three))  // X button
         {
