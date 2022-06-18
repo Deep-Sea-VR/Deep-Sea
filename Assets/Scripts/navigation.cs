@@ -20,6 +20,6 @@ public class navigation : MonoBehaviour
         float playerX = player.transform.position.x;
         float playerZ = player.transform.position.z;
 
-        CurrentPoint.transform.position = new Vector3(playerX -100, CurrentPoint.transform.position.y, playerZ - 400);
+        CurrentPoint.transform.position = new Vector3((playerX -100) * 200 / 170, CurrentPoint.transform.position.y, (playerZ - 400) * 200 / 170);
     }
 }
