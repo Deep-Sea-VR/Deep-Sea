@@ -23,6 +23,8 @@ public class controller : MonoBehaviour
     {
         befRight = rightController.transform.localPosition.x;
         befLeft = leftController.transform.localPosition.x;
+
+        StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
     }
 
     // Update is called once per frame
@@ -132,4 +134,20 @@ public class controller : MonoBehaviour
         }
     }
     */
+
+    protected IEnumerator VibrateController(float waitTime, float frequency, float amplitude, OVRInput.Controller controller)
+    {
+        OVRInput.SetControllerVibration(frequency, amplitude, controller);
+        yield return new WaitForSeconds(waitTime);
+        OVRInput.SetControllerVibration(0, 0, controller);
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "Bubbles")
+        {
+            StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
+        }
+    }
 }
