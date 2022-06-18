@@ -11,7 +11,7 @@ public class Lids : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (false)
+        if (Data.Instance.isFindCrystal)
         {
             lidsAnimator.SetTrigger("isClose");
             Open();

@@ -26,9 +26,15 @@ public class BookFlip : MonoBehaviour
     {
         if (OVRInput.GetDown(OVRInput.Button.One))  // A button
         {
-            if (!autoFlip.FlipRightPage())  // 마지막 페이지라면
+            // 잠들기 전이면 마지막 페이지 남기고 잠들기
+            if ((autoFlip.ControledBook.currentPage >= autoFlip.ControledBook.TotalPageCount - 1)
+                && !Data.Instance.isFindCrystal)
             {
                 lids.Close();
+            }
+            else
+            {
+                autoFlip.FlipRightPage();
             }
         }
         if (OVRInput.GetDown(OVRInput.Button.Three))  // X button

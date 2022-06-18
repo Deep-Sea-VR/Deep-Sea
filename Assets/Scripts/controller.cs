@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class controller : MonoBehaviour
@@ -168,7 +169,8 @@ public class controller : MonoBehaviour
             StartCoroutine(VibrateController(0.05f, 0.4f, 0.6f, OVRInput.Controller.All));
         } else if (other.name == "MoonCrystal")
         {
-
+            Data.Instance.isFindCrystal = true;
+            SceneManager.LoadScene(0);
         }
     }
 
