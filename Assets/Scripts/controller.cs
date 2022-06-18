@@ -163,10 +163,12 @@ public class controller : MonoBehaviour
         } else if (other.name == "Jellyfish")
         {
             StartCoroutine(VibrateController(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
-        }
-        else if (other.name == "Fishes")
+        } else if (other.name == "Fishes")
         {
             StartCoroutine(VibrateController(0.05f, 0.4f, 0.6f, OVRInput.Controller.All));
+        } else if (other.name == "MoonCrystal")
+        {
+
         }
     }
 
