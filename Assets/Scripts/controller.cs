@@ -162,6 +162,7 @@ public class controller : MonoBehaviour
             StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
         } else if (other.name == "Jellyfish")
         {
+            other.GetComponent<AudioSource>().Play();
             StartCoroutine(VibrateController(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
         } else if (other.name == "Fishes")
         {
@@ -174,9 +175,12 @@ public class controller : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.name == "Bubbles" || other.name == "Jellyfish" || other.name == "Fishes")
+        if (other.name == "Bubbles" || other.name == "Fishes")
         {
             OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.All);
+        } else if (other.name == "Jellyfish")
+        {
+            other.GetComponent<AudioSource>().Stop();
         }
     }
 }
