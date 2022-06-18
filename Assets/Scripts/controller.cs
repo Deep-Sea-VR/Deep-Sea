@@ -9,7 +9,7 @@ public class controller : MonoBehaviour
     public GameObject leftController, rightController;
     public GameObject forwardDirection;
 
-    public const float WALK_SPEED = 10f;
+    public const float WALK_SPEED = 13f;
     // public const float RUN_SPEED = 6f;
     public const float ROTATE_SPEED = 20f;
 
@@ -19,12 +19,14 @@ public class controller : MonoBehaviour
 
     private float force;
 
+    public AudioSource swimmingSound;
+
     private void Start()
     {
         befRight = rightController.transform.localPosition.x;
         befLeft = leftController.transform.localPosition.x;
 
-        StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
+        swimmingSound = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -38,6 +40,7 @@ public class controller : MonoBehaviour
         // 양팔을 움직이면 앞으로 전진
         if (moveRight > 0.01f && moveLeft > 0.01f)
         {
+            swimmingSound.Play();
             //StopCoroutine("MoveForwardCoroutine");
             //Debug.Log("Update "+forward * WALK_SPEED * (moveRight + moveLeft));
             //moveRotate = false;
@@ -49,6 +52,7 @@ public class controller : MonoBehaviour
         // 천천히 전진
         else if (isMoveForward)
         {
+            swimmingSound.Stop();
             // StopCoroutine("MoveForwardCoroutine");
             // Debug.Log("moveForward");
             //moveForward = false;
@@ -147,9 +151,16 @@ public class controller : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Bubbles" || other.name == "Jellyfish" || other.name == "Fishes")
+        if (other.name == "Bubbles")
         {
             StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
+        } else if (other.name == "Jellyfish")
+        {
+            StartCoroutine(VibrateController(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
+        }
+        else if (other.name == "Fishes")
+        {
+            StartCoroutine(VibrateController(0.05f, 0.4f, 0.6f, OVRInput.Controller.All));
         }
     }
 
