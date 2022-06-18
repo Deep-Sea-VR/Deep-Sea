@@ -85,6 +85,7 @@ public class controller : MonoBehaviour
             moveRotate = true;
         }
         */
+
         /*
         // 천천히 회전
         else if (moveRotate)
@@ -142,8 +143,6 @@ public class controller : MonoBehaviour
     {
         OVRInput.SetControllerVibration(frequency, amplitude, controller);
         yield return new WaitForSeconds(waitTime);
-        OVRInput.SetControllerVibration(0, 0, controller);
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -151,6 +150,14 @@ public class controller : MonoBehaviour
         if (other.name == "Bubbles" || other.name == "Jellyfish" || other.name == "Fishes")
         {
             StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.name == "Bubbles" || other.name == "Jellyfish" || other.name == "Fishes")
+        {
+            OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.All);
         }
     }
 }
