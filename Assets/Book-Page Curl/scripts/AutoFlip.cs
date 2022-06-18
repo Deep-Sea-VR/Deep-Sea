@@ -9,6 +9,7 @@ public class AutoFlip : MonoBehaviour {
     public bool AutoStartFlip=true;
     public Book ControledBook;
     public int AnimationFramesCount = 40;
+    public AudioSource flipAudio;
     bool isFlipping = false;
     // Use this for initialization
     void Start () {
@@ -38,6 +39,7 @@ public class AutoFlip : MonoBehaviour {
         float h = Mathf.Abs(ControledBook.EndBottomRight.y) * 0.9f;
         float dx = (xl)*2 / AnimationFramesCount;
         StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx));
+        flipAudio.Play();
         return true;
     }
     public void FlipLeftPage()
@@ -52,6 +54,7 @@ public class AutoFlip : MonoBehaviour {
         float h = Mathf.Abs(ControledBook.EndBottomRight.y) * 0.9f;
         float dx = (xl) * 2 / AnimationFramesCount;
         StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx));
+        flipAudio.Play();
     }
     IEnumerator FlipToEnd()
     {
