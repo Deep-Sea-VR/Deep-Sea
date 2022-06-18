@@ -23,6 +23,8 @@ public class controller : MonoBehaviour
     {
         befRight = rightController.transform.localPosition.x;
         befLeft = leftController.transform.localPosition.x;
+
+        StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
     }
 
     // Update is called once per frame
@@ -31,6 +33,7 @@ public class controller : MonoBehaviour
         float moveRight = rightController.transform.localPosition.x - befRight;
         float moveLeft = befLeft - leftController.transform.localPosition.x;
         Vector3 forward = forwardDirection.transform.forward;
+
 
         // 양팔을 움직이면 앞으로 전진
         if (moveRight > 0.01f && moveLeft > 0.01f)
@@ -58,6 +61,8 @@ public class controller : MonoBehaviour
             if (force < 0.01f)
                 isMoveForward = false;
         }
+
+        
         /*
         // 오른팔만 움직이면 왼쪽으로 회전
         else if (moveRight > 0.01f)
@@ -132,4 +137,20 @@ public class controller : MonoBehaviour
         }
     }
     */
+
+    protected IEnumerator VibrateController(float waitTime, float frequency, float amplitude, OVRInput.Controller controller)
+    {
+        OVRInput.SetControllerVibration(frequency, amplitude, controller);
+        yield return new WaitForSeconds(waitTime);
+        OVRInput.SetControllerVibration(0, 0, controller);
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "Bubbles" || other.name == "Jellyfish" || other.name == "Fishes")
+        {
+            StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
+        }
+    }
 }
