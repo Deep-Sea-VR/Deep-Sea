@@ -21,6 +21,8 @@ public class controller : MonoBehaviour
 
     public AudioSource swimmingSound;
 
+    public GameObject map;
+
     private void Start()
     {
         befRight = rightController.transform.localPosition.x;
@@ -36,6 +38,10 @@ public class controller : MonoBehaviour
         float moveLeft = befLeft - leftController.transform.localPosition.x;
         Vector3 forward = forwardDirection.transform.forward;
 
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+        {
+            map.SetActive(!map.activeSelf);
+        }
 
         // 양팔을 움직이면 앞으로 전진
         if (moveRight > 0.01f && moveLeft > 0.01f)
