@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Lids : MonoBehaviour
 {
@@ -31,5 +32,10 @@ public class Lids : MonoBehaviour
     private void Open()
     {
         lidsAnimator.SetTrigger("Open");
+    }
+
+    public void MoveScene()
+    {
+        SceneManager.LoadScene(1);
     }
 }
