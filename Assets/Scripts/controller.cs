@@ -42,7 +42,7 @@ public class controller : MonoBehaviour
             //Debug.Log("Update "+forward * WALK_SPEED * (moveRight + moveLeft));
             //moveRotate = false;
 
-            gameObject.transform.position -= forward * WALK_SPEED * (moveRight + moveLeft);
+            gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
             isMoveForward = true;
             force = WALK_SPEED * 0.02f;
         }
@@ -54,7 +54,7 @@ public class controller : MonoBehaviour
             //moveForward = false;
             //StartCoroutine("MoveForwardCoroutine", WALK_SPEED * 0.02f);
 
-            gameObject.transform.position -= forward * force;
+            gameObject.transform.position += forward * force;
             Debug.Log("MoveForwardCoroutine " + forward * force);
             force = Mathf.Lerp(force, 0, Time.deltaTime);
 
