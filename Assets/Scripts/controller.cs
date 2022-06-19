@@ -34,17 +34,21 @@ public class controller : MonoBehaviour
         swimmingSound = gameObject.GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        if (OVRInput.GetDown(OVRInput.Button.Two)) // Button B
+        {
+            map.SetActive(!map.activeSelf);
+        }
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
         float moveRight = rightController.transform.localPosition.x - befRight;
         float moveLeft = befLeft - leftController.transform.localPosition.x;
         Vector3 forward = forwardDirection.transform.forward;
-
-        if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
-        {
-            map.SetActive(!map.activeSelf);
-        }
+        
 
         // 양팔을 움직이면 앞으로 전진
         if (moveRight > 0.01f && moveLeft > 0.01f)
@@ -56,7 +60,8 @@ public class controller : MonoBehaviour
 
             //rigid.MovePosition(gameObject.transform.position + forward * WALK_SPEED * (moveRight + moveLeft));
 
-            gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
+            // gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
+            rigid.velocity = forward * WALK_SPEED * (moveRight + moveLeft);
             isMoveForward = true;
             force = WALK_SPEED * 0.02f;
         }
@@ -71,8 +76,9 @@ public class controller : MonoBehaviour
 
             //rigid.MovePosition(gameObject.transform.position + forward * force);
 
-            gameObject.transform.position += forward * force;
-            Debug.Log("MoveForwardCoroutine " + forward * force);
+            rigid.velocity += forward * force;
+            //gameObject.transform.position += forward * force;
+            //Debug.Log("MoveForwardCoroutine " + forward * force);
             force = Mathf.Lerp(force, 0, Time.deltaTime);
 
             if (force < 0.01f)
