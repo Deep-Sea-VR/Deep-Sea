@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class controller : MonoBehaviour
 {
+    public GameObject map;
     public GameObject camera;
     public GameObject leftController, rightController;
     public GameObject forwardDirection;
 
-    public Rigidbody rigid;
+    //public Rigidbody rigid;
 
     public const float WALK_SPEED = 13f;
     // public const float RUN_SPEED = 6f;
@@ -19,19 +20,14 @@ public class controller : MonoBehaviour
     private float befRight, befLeft;    // 양쪽 컨트롤러의 위치
     private bool isMoveForward;
     // private bool moveRotate;   // 팔을 움직이고 있는지
-
     private float force;
 
     public AudioSource swimmingSound;
-
-    public GameObject map;
 
     private void Start()
     {
         befRight = rightController.transform.localPosition.x;
         befLeft = leftController.transform.localPosition.x;
-
-        swimmingSound = gameObject.GetComponent<AudioSource>();
     }
 
     private void Update()
