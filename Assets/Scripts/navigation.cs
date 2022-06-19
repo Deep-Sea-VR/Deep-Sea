@@ -11,7 +11,7 @@ public class navigation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        CurrentPoint.transform.position = new Vector3(-100, 100, CurrentPoint.transform.position.z);
     }
 
     // Update is called once per frame
@@ -23,14 +23,8 @@ public class navigation : MonoBehaviour
         float pointX = (playerX - 100) / 200 * 150;
         float pointY = (playerZ - 400) / 200 * 150;
 
-        if (pointX <= -170 || pointX >= 170)
-        {
-            pointX = -170;
-        }
-        if (pointY <= -170 || pointY >= 170)
-        {
-            pointY = -170;
-        }
-        CurrentPoint.transform.position = new Vector3(pointX, pointY, CurrentPoint.transform.position.z);
+        
+        CurrentPoint.transform.localPosition = new Vector3(pointX, pointY, CurrentPoint.transform.position.z);
+        //CurrentPoint.transform.position = new Vector3(0, 0, CurrentPoint.transform.position.z);
     }
 }
