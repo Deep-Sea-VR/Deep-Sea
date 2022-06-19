@@ -15,8 +15,11 @@ public class Lids : MonoBehaviour
     {
         if (Data.Instance.isFindCrystal)
         {
-            lidsAnimator.SetTrigger("isClose");
             Open();
+        }
+        else
+        {
+            lidsAnimator.SetTrigger("isOpen");
         }
     }
 
