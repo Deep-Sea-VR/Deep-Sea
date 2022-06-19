@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Room.unity
     guid: 9b62f70e0cfef714daacf8f5a8e9bc4f
   - enabled: 1
+    path: Assets/Scenes/Sea.unity
+    guid: 3a73b7df5d4245d4f89cdf9e93e05555
+  - enabled: 0
     path: Assets/Davis3D/OceanEnvironmentPack/Scenes/Demonstration.unity
     guid: af2f90eac4257a54cad615691e9c1882
   - enabled: 0

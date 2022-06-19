@@ -74,6 +74,10 @@ public class Book : MonoBehaviour {
 
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
+
+        if (Data.Instance.isFindCrystal)    // 보물을 찾은 후 깨어나면 마지막 페이지를 남긴 상태
+            currentPage = TotalPageCount - 2;
+
         UpdateSprites();
         CalcCurlCriticalPoints();
 

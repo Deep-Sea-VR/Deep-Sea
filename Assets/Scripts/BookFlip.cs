@@ -30,7 +30,8 @@ public class BookFlip : MonoBehaviour
             if ((autoFlip.ControledBook.currentPage == autoFlip.ControledBook.TotalPageCount - 2)
             && !Data.Instance.isFindCrystal)
             {
-                lids.Close();
+                if (!lids.isClosing)
+                    lids.Close();
             }
             else
             {
