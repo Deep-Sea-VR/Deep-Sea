@@ -6,32 +6,30 @@ using UnityEngine.UI;
 
 public class controller : MonoBehaviour
 {
+    public GameObject map;
     public GameObject camera;
     public GameObject leftController, rightController;
     public GameObject forwardDirection;
 
-    public Rigidbody rigid;
+    //public Rigidbody rigid;
 
-    public const float WALK_SPEED = 13f;
+    public const float WALK_SPEED = 10f;
     // public const float RUN_SPEED = 6f;
     public const float ROTATE_SPEED = 20f;
+    public const float MOVE_DELAY = 3f;
 
     private float befRight, befLeft;    // 양쪽 컨트롤러의 위치
-    private bool isMoveForward;
-    // private bool moveRotate;   // 팔을 움직이고 있는지
-
-    private float force;
+    private bool isMoveForward;         // 헤엄치고 난 후 팔은 안움직이지만 앞으로 나아가는 상태
+    // private bool moveRotate;
+    private float maxSpeed;             // 헤엄치는 중 컨트롤러의 최대 움직임
+    private float force;                // isMoveForward 상태에서의 이동 강도
+    private bool canMove;               // 시작 직후 움직이지 못하도록 하는 플래그
 
     public AudioSource swimmingSound;
 
-    public GameObject map;
-
     private void Start()
     {
-        befRight = rightController.transform.localPosition.x;
-        befLeft = leftController.transform.localPosition.x;
-
-        swimmingSound = gameObject.GetComponent<AudioSource>();
+        StartCoroutine("MoveDelayCoroutine");    // 시작 직후에는 움직이지 못하게
     }
 
     private void Update()
@@ -44,84 +42,100 @@ public class controller : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float moveRight = rightController.transform.localPosition.x - befRight;
-        float moveLeft = befLeft - leftController.transform.localPosition.x;
-        Vector3 forward = forwardDirection.transform.forward;
-        
-
-        // 양팔을 움직이면 앞으로 전진
-        if (moveRight > 0.01f && moveLeft > 0.01f)
+        if (canMove)
         {
-            swimmingSound.Play();
-            //StopCoroutine("MoveForwardCoroutine");
-            //Debug.Log("Update "+forward * WALK_SPEED * (moveRight + moveLeft));
-            //moveRotate = false;
+            float moveRight = rightController.transform.localPosition.x - befRight;
+            float moveLeft = befLeft - leftController.transform.localPosition.x;
+            Vector3 forward = forwardDirection.transform.forward;
 
-            //rigid.MovePosition(gameObject.transform.position + forward * WALK_SPEED * (moveRight + moveLeft));
 
-            gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
-            isMoveForward = true;
-            force = WALK_SPEED * 0.02f;
+            // 양팔을 움직이면 앞으로 전진
+            if (moveRight > 0.01f && moveLeft > 0.01f)
+            {
+                swimmingSound.Play();
+                //StopCoroutine("MoveForwardCoroutine");
+                //Debug.Log("Update "+forward * WALK_SPEED * (moveRight + moveLeft));
+                //moveRotate = false;
+
+                //rigid.MovePosition(gameObject.transform.position + forward * WALK_SPEED * (moveRight + moveLeft));
+
+                gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft); // 이동
+
+                isMoveForward = true;
+                maxSpeed = Mathf.Max(maxSpeed, moveRight + moveLeft);
+                force = WALK_SPEED * maxSpeed;
+            }
+            // 천천히 전진
+            else if (isMoveForward)
+            {
+                swimmingSound.Stop();
+                // StopCoroutine("MoveForwardCoroutine");
+                // Debug.Log("moveForward");
+                //moveForward = false;
+                //StartCoroutine("MoveForwardCoroutine", WALK_SPEED * 0.02f);
+
+                //rigid.MovePosition(gameObject.transform.position + forward * force);
+
+                gameObject.transform.position += forward * force;   // 이동
+                //Debug.Log("MoveForwardCoroutine " + forward * force);
+                maxSpeed = 0;   // 최대 속도 초기화
+                force = Mathf.Lerp(force, 0, Time.deltaTime);   // 
+
+                if (force < 0.01f)
+                    isMoveForward = false;
+            }
+
+
+            /*
+            // 오른팔만 움직이면 왼쪽으로 회전
+            else if (moveRight > 0.01f)
+            {
+                //StopCoroutine("MoveForwardCoroutine");
+                //StopCoroutine("MoveRotateCoroutine");
+                gameObject.transform.position -= forward * moveRight;
+                gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, -ROTATE_SPEED, 0, 0) * moveRight);
+                moveForward = false;
+                moveRotate = true;
+            }
+            // 왼팔만 움직이면 오른쪽으로 회전
+            else if (moveLeft > 0.01f)
+            {
+                //StopCoroutine("MoveForwardCoroutine");
+                //StopCoroutine("MoveRotateCoroutine");
+                gameObject.transform.position -= forward * moveLeft;
+                gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, ROTATE_SPEED, 0, 0) * moveLeft);
+                moveForward = false;
+                moveRotate = true;
+            }
+            */
+
+            /*
+            // 천천히 회전
+            else if (moveRotate)
+            {
+                Debug.Log("moveRotate");
+                moveRotate = false;
+                StartCoroutine("MoveForwardCoroutine", moveRight > moveLeft ? moveRight : moveLeft);
+                StartCoroutine("MoveRotateCoroutine", 
+                    moveRight > moveLeft ? 
+                    Quaternion.Euler(new Vector4(0, -ROTATE_SPEED, 0, 0) * moveRight) 
+                    : Quaternion.Euler(new Vector4(0, ROTATE_SPEED, 0, 0) * moveLeft));
+            }
+            */
+
+            befRight = rightController.transform.localPosition.x;
+            befLeft = leftController.transform.localPosition.x;
         }
-        // 천천히 전진
-        else if (isMoveForward)
-        {
-            swimmingSound.Stop();
-            // StopCoroutine("MoveForwardCoroutine");
-            // Debug.Log("moveForward");
-            //moveForward = false;
-            //StartCoroutine("MoveForwardCoroutine", WALK_SPEED * 0.02f);
+    }
 
-            //rigid.MovePosition(gameObject.transform.position + forward * force);
-
-            gameObject.transform.position += forward * force;
-            Debug.Log("MoveForwardCoroutine " + forward * force);
-            force = Mathf.Lerp(force, 0, Time.deltaTime);
-
-            if (force < 0.01f)
-                isMoveForward = false;
-        }
-
-        
-        /*
-        // 오른팔만 움직이면 왼쪽으로 회전
-        else if (moveRight > 0.01f)
-        {
-            //StopCoroutine("MoveForwardCoroutine");
-            //StopCoroutine("MoveRotateCoroutine");
-            gameObject.transform.position -= forward * moveRight;
-            gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, -ROTATE_SPEED, 0, 0) * moveRight);
-            moveForward = false;
-            moveRotate = true;
-        }
-        // 왼팔만 움직이면 오른쪽으로 회전
-        else if (moveLeft > 0.01f)
-        {
-            //StopCoroutine("MoveForwardCoroutine");
-            //StopCoroutine("MoveRotateCoroutine");
-            gameObject.transform.position -= forward * moveLeft;
-            gameObject.transform.rotation *= Quaternion.Euler(new Vector4(0, ROTATE_SPEED, 0, 0) * moveLeft);
-            moveForward = false;
-            moveRotate = true;
-        }
-        */
-
-        /*
-        // 천천히 회전
-        else if (moveRotate)
-        {
-            Debug.Log("moveRotate");
-            moveRotate = false;
-            StartCoroutine("MoveForwardCoroutine", moveRight > moveLeft ? moveRight : moveLeft);
-            StartCoroutine("MoveRotateCoroutine", 
-                moveRight > moveLeft ? 
-                Quaternion.Euler(new Vector4(0, -ROTATE_SPEED, 0, 0) * moveRight) 
-                : Quaternion.Euler(new Vector4(0, ROTATE_SPEED, 0, 0) * moveLeft));
-        }
-        */
+    // 시작 직후에는 움직이지 못하게
+    IEnumerator MoveDelayCoroutine()
+    {
+        yield return new WaitForSeconds(MOVE_DELAY);
 
         befRight = rightController.transform.localPosition.x;
         befLeft = leftController.transform.localPosition.x;
+        canMove = true;
     }
 
     /*
