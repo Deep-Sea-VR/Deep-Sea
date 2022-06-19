@@ -13,7 +13,7 @@ public class controller : MonoBehaviour
 
     //public Rigidbody rigid;
 
-    public const float WALK_SPEED = 13f;
+    public const float WALK_SPEED = 10f;
     // public const float RUN_SPEED = 6f;
     public const float ROTATE_SPEED = 20f;
     public const float MOVE_DELAY = 3f;
@@ -29,8 +29,6 @@ public class controller : MonoBehaviour
 
     private void Start()
     {
-        befRight = rightController.transform.localPosition.x;
-        befLeft = leftController.transform.localPosition.x;
         StartCoroutine("MoveDelayCoroutine");    // 시작 직후에는 움직이지 못하게
     }
 
@@ -134,6 +132,9 @@ public class controller : MonoBehaviour
     IEnumerator MoveDelayCoroutine()
     {
         yield return new WaitForSeconds(MOVE_DELAY);
+
+        befRight = rightController.transform.localPosition.x;
+        befLeft = leftController.transform.localPosition.x;
         canMove = true;
     }
 
