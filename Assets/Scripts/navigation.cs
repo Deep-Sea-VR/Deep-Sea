@@ -18,12 +18,15 @@ public class navigation : MonoBehaviour
     {
         float playerX = player.transform.position.x;
         float playerZ = player.transform.position.z;
+        float playerRotaionY = player.transform.rotation.y;
 
         float pointX = (playerX - 100) / 200 * 150;
         float pointY = (playerZ - 400) / 200 * 150;
+        float pointRotaionZ = playerRotaionY;
 
-        
+
         CurrentPoint.transform.localPosition = new Vector3(pointX, pointY, CurrentPoint.transform.localPosition.z);
+        CurrentPoint.transform.localRotation = new Quaternion(CurrentPoint.transform.localRotation.x, CurrentPoint.transform.localRotation.y, pointRotaionZ, CurrentPoint.transform.localRotation.w);
         //CurrentPoint.transform.position = new Vector3(0, 0, CurrentPoint.transform.position.z);
     }
 }
