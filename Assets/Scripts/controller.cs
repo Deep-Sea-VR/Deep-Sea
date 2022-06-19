@@ -10,6 +10,8 @@ public class controller : MonoBehaviour
     public GameObject leftController, rightController;
     public GameObject forwardDirection;
 
+    public Rigidbody rigid;
+
     public const float WALK_SPEED = 13f;
     // public const float RUN_SPEED = 6f;
     public const float ROTATE_SPEED = 20f;
@@ -52,6 +54,8 @@ public class controller : MonoBehaviour
             //Debug.Log("Update "+forward * WALK_SPEED * (moveRight + moveLeft));
             //moveRotate = false;
 
+            //rigid.MovePosition(gameObject.transform.position + forward * WALK_SPEED * (moveRight + moveLeft));
+
             gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
             isMoveForward = true;
             force = WALK_SPEED * 0.02f;
@@ -64,6 +68,8 @@ public class controller : MonoBehaviour
             // Debug.Log("moveForward");
             //moveForward = false;
             //StartCoroutine("MoveForwardCoroutine", WALK_SPEED * 0.02f);
+
+            //rigid.MovePosition(gameObject.transform.position + forward * force);
 
             gameObject.transform.position += forward * force;
             Debug.Log("MoveForwardCoroutine " + forward * force);
@@ -156,6 +162,13 @@ public class controller : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
     }
 
+    protected IEnumerator VibrateControllerEnd(float waitTime, float frequency, float amplitude, OVRInput.Controller controller)
+    {
+        OVRInput.SetControllerVibration(frequency, amplitude, controller);
+        yield return new WaitForSeconds(waitTime);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.All);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Bubbles")
@@ -164,7 +177,11 @@ public class controller : MonoBehaviour
         } else if (other.name == "Jellyfish")
         {
             other.GetComponent<AudioSource>().Play();
-            StartCoroutine(VibrateController(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
+            StartCoroutine(VibrateControllerEnd(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
+            new WaitForSeconds(0.1f);
+            StartCoroutine(VibrateControllerEnd(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
+            new WaitForSeconds(0.1f);
+            StartCoroutine(VibrateControllerEnd(0.05f, 0.1f, 0.4f, OVRInput.Controller.All));
         } else if (other.name == "Fishes")
         {
             StartCoroutine(VibrateController(0.05f, 0.4f, 0.6f, OVRInput.Controller.All));
