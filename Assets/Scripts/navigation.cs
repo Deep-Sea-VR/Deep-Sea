@@ -11,7 +11,6 @@ public class navigation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CurrentPoint.transform.position = new Vector3(-100, 100, CurrentPoint.transform.position.z);
     }
 
     // Update is called once per frame
