@@ -20,8 +20,8 @@ public class navigation : MonoBehaviour
         float playerX = player.transform.position.x;
         float playerZ = player.transform.position.z;
 
-        float pointX = (playerX - 100) / 200 * 170;
-        float pointY = (playerZ - 400) / 200 * 170;
+        float pointX = (playerX - 100) / 200 * 150;
+        float pointY = (playerZ - 400) / 200 * 150;
 
         if (pointX <= -170 || pointX >= 170)
         {
@@ -31,6 +31,6 @@ public class navigation : MonoBehaviour
         {
             pointY = -170;
         }
-        CurrentPoint.transform.position = new Vector3(pointX, CurrentPoint.transform.position.y, pointY);
+        CurrentPoint.transform.position = new Vector3(pointX, pointY, CurrentPoint.transform.position.z);
     }
 }
