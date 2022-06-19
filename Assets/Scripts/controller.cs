@@ -36,10 +36,9 @@ public class controller : MonoBehaviour
 
     private void Update()
     {
-        if (OVRInput.GetDown(OVRInput.Button.Two)) // Button B
-        {
+        // 지도 조작
+        if (OVRInput.GetDown(OVRInput.Button.One)) // Button A
             map.SetActive(!map.activeSelf);
-        }
     }
 
     // Update is called once per frame
