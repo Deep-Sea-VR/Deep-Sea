@@ -23,7 +23,7 @@ public class navigation : MonoBehaviour
         float pointY = (playerZ - 400) / 200 * 150;
 
         
-        CurrentPoint.transform.localPosition = new Vector3(pointX, pointY, CurrentPoint.transform.position.z);
+        CurrentPoint.transform.localPosition = new Vector3(pointX, pointY, CurrentPoint.transform.localPosition.z);
         //CurrentPoint.transform.position = new Vector3(0, 0, CurrentPoint.transform.position.z);
     }
 }
