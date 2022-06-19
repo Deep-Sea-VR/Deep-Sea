@@ -59,9 +59,9 @@ public class controller : MonoBehaviour
 
             //rigid.MovePosition(gameObject.transform.position + forward * WALK_SPEED * (moveRight + moveLeft));
 
-            gameObject.transform.position += forward * WALK_SPEED * (moveRight + moveLeft);
+            gameObject.transform.position += forward * WALK_SPEED * Mathf.Pow(2, moveRight + moveLeft);
             isMoveForward = true;
-            force = WALK_SPEED * 0.02f;
+            force = WALK_SPEED * 0.02f * (Mathf.Pow(2, moveRight + moveLeft) + 1) ;
         }
         // 천천히 전진
         else if (isMoveForward)
