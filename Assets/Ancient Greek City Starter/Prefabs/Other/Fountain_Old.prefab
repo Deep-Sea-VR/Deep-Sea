@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8472800873021839351}
   - component: {fileID: 634560320162573761}
   - component: {fileID: 6625604655530561848}
-  - component: {fileID: 4654797701775089822}
   m_Layer: 0
   m_Name: Fountain_Old
   m_TagString: Untagged
@@ -56,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,17 +80,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4654797701775089822
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4885902398377223652}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7545831556655825222, guid: 6843a8c706e1bb94b89c46cf76c0602c, type: 3}
+  m_AdditionalVertexStreams: {fileID: 0}
