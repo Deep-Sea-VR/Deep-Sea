@@ -28,8 +28,7 @@ public class PlayAudio : MonoBehaviour
     {
         while (childAudio.volume > 0)
         {
-            childAudio.volume -= Time.deltaTime / 10;
-            Debug.Log(childAudio.volume);
+            childAudio.volume -= Time.deltaTime / 20;
             yield return null;
         }
     }

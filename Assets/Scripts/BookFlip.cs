@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BookFlip : MonoBehaviour
@@ -13,6 +14,14 @@ public class BookFlip : MonoBehaviour
     [SerializeField]
     private PlayAudio playAudio;
 
+    [SerializeField]
+    private float endDelayTime;
+
+    [SerializeField]
+    private TextMeshProUGUI endText;
+
+    private bool isEnd;
+
     // Update is called once per frame
     void Update()
     {
@@ -21,26 +30,47 @@ public class BookFlip : MonoBehaviour
 
     void BtnDown()
     {
-        if (OVRInput.GetDown(OVRInput.Button.One))  // A button
+        if (!isEnd)
         {
-            // 잠들기 전이면 마지막 페이지 남기고 잠들기
-            if ((autoFlip.ControledBook.currentPage == autoFlip.ControledBook.TotalPageCount - 2)
-            && !Data.Instance.isFindCrystal)
+            if (OVRInput.GetDown(OVRInput.Button.One))  // A button
             {
-                if (!lids.isClosing)
+                // 잠들기 전이면 마지막 페이지 남기고 잠들기
+                if ((autoFlip.ControledBook.currentPage == autoFlip.ControledBook.TotalPageCount - 2)
+                && !Data.Instance.isFindCrystal)
                 {
-                    lids.Close();
-                    playAudio.FadeOutAudio();
+                    if (!lids.isClosing)
+                    {
+                        lids.Close();
+                        playAudio.FadeOutAudio();
+                    }
+                }
+                else
+                {
+                    autoFlip.FlipRightPage();
+
+                    if (Data.Instance.isFindCrystal && autoFlip.ControledBook.currentPage >= autoFlip.ControledBook.TotalPageCount) // 책을 다 읽으면
+                    {
+                        isEnd = true;
+                        StartCoroutine("GameEndCoroutine"); // 게임 종료
+                    }
                 }
             }
-            else
+            if (OVRInput.GetDown(OVRInput.Button.Three))  // X button
             {
-                autoFlip.FlipRightPage();
+                autoFlip.FlipLeftPage();
             }
         }
-        if (OVRInput.GetDown(OVRInput.Button.Three))  // X button
+    }
+
+    // 게임 종료
+    IEnumerator GameEndCoroutine()
+    {
+        yield return new WaitForSeconds(endDelayTime);
+
+        for (float a = 0; endText.color.a < 1; a += 0.02f)
         {
-            autoFlip.FlipLeftPage();
+            endText.color = new Color(255, 255, 255, a);
+            yield return null;
         }
     }
 }
