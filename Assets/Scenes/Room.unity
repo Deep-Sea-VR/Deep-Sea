@@ -1310,6 +1310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lidsAnimator: {fileID: 412719233}
+  isClosing: 0
 --- !u!95 &412719233
 Animator:
   serializedVersion: 3
