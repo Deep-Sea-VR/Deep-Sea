@@ -10,11 +10,8 @@ public class BookFlip : MonoBehaviour
     [SerializeField]
     private Lids lids;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private PlayAudio playAudio;
 
     // Update is called once per frame
     void Update()
@@ -31,7 +28,10 @@ public class BookFlip : MonoBehaviour
             && !Data.Instance.isFindCrystal)
             {
                 if (!lids.isClosing)
+                {
                     lids.Close();
+                    playAudio.FadeOutAudio();
+                }
             }
             else
             {
