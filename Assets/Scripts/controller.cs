@@ -8,6 +8,8 @@ public class controller : MonoBehaviour
 {
     public GameObject map;
     public GameObject mapItem;
+    public GameObject mapCollider;
+    public GameObject buttonInfo;
     public GameObject camera;
     public GameObject leftController, rightController;
     public GameObject forwardDirection;
@@ -32,6 +34,7 @@ public class controller : MonoBehaviour
     {
         StartCoroutine("MoveDelayCoroutine");    // 시작 직후에는 움직이지 못하게
         map.SetActive(false);
+        buttonInfo.SetActive(false);
     }
 
     private void Update()
@@ -42,6 +45,17 @@ public class controller : MonoBehaviour
         {
             if (OVRInput.GetDown(OVRInput.Button.One)) // Button A
                 map.SetActive(!map.activeSelf);
+        }
+
+        if (buttonInfo.activeSelf)
+        {
+            if (OVRInput.GetDown(OVRInput.Button.One))
+            {
+                buttonInfo.SetActive(false);
+                map.SetActive(true);
+                mapItem.SetActive(false);
+                mapCollider.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -199,7 +213,7 @@ public class controller : MonoBehaviour
             StartCoroutine(VibrateController(0.05f, 0.3f, 0.2f, OVRInput.Controller.All));
         } else if (other.name == "Rock")
         {
-            StartCoroutine(VibrateControllerEnd(0.05f, 0.01f, 0.6f, OVRInput.Controller.All));
+            StartCoroutine(VibrateController(0.05f, 0.1f, 0.6f, OVRInput.Controller.All));
         } else if (other.name == "Jellyfish")
         {
             other.GetComponent<AudioSource>().Play();
@@ -214,9 +228,7 @@ public class controller : MonoBehaviour
             SceneManager.LoadScene(0);
         } else if (other.name == "Shell")
         {
-            map.SetActive(true);
-            mapItem.SetActive(false);
-            other.gameObject.SetActive(false);
+            buttonInfo.SetActive(true);
         }
     }
 
@@ -228,6 +240,9 @@ public class controller : MonoBehaviour
         } else if (other.name == "Jellyfish")
         {
             other.GetComponent<AudioSource>().Stop();
+        } else if (other.name == "Shell")
+        {
+            buttonInfo.SetActive(false);
         }
     }
 }
